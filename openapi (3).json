@@ -1,0 +1,168 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Movie API",
+    "version": "1.0.0",
+    "description": "Swagger documentation for CAB230 Assignment 3"
+  },
+  "paths": {
+    "/movies/search": {
+      "get": {
+        "summary": "Search for movies",
+        "responses": {
+          "200": {
+            "description": "List of movies"
+          }
+        },
+        "tags": ["Movies"]
+      }
+    },
+    "/user/{email}/profile": {
+      "get": {
+        "summary": "Get user profile",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Public or full profile depending on authentication"
+          },
+          "401": {
+            "description": "Unauthorized (expired, invalid, or missing token)"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "tags": ["Users"]
+      },
+      "put": {
+        "summary": "Update user profile",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "address": {
+                    "type": "string"
+                  }
+                },
+                "required": ["firstName", "lastName", "dob", "address"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated profile successfully"
+          },
+          "400": {
+            "description": "Missing or invalid fields (e.g. bad date format)"
+          },
+          "401": {
+            "description": "Unauthorized (expired, invalid, or missing token)"
+          },
+          "403": {
+            "description": "Forbidden (not allowed to update another user's profile)"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "tags": ["Users"]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Movies",
+      "description": "Endpoints related to movie data"
+    },
+    {
+      "name": "Users",
+      "description": "Endpoints for user profile management"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "imdbID": {
+            "type": "string"
+          },
+          "imdbRating": {
+            "type": "number"
+          },
+          "rottenTomatoesRating": {
+            "type": "number"
+          },
+          "metacriticRating": {
+            "type": "number"
+          },
+          "classification": {
+            "type": "string"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "perPage": {
+            "type": "integer"
+          },
+          "currentPage": {
+            "type": "integer"
+          },
+          "lastPage": {
+            "type": "integer"
+          },
+          "prevPage": {
+            "type": ["integer", "null"]
+          },
+          "nextPage": {
+            "type": ["integer", "null"]
+          }
+        }
+      }
+    }
+  }
+}
